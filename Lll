@@ -1,0 +1,113 @@
+Apologies for the oversight. To fix the issue and ensure that the data is correctly passed to the `Resume` component, you need to update the `UserProvider` and `Resume` components. Here's the updated code:
+
+```jsx
+// UserProvider.js
+import React, { createContext, useState } from 'react';
+
+export const UserContext = createContext();
+
+const UserProvider = ({ children }) => {
+  const [usersDetails, setUsersDetails] = useState([]);
+
+  const handleUserSubmit = (userData) => {
+    setUsersDetails([...usersDetails, userData]);
+  };
+
+  return (
+    <UserContext.Provider value={{ usersDetails, handleUserSubmit }}>
+      {children}
+    </UserContext.Provider>
+  );
+};
+
+export default UserProvider;
+```
+
+```jsx
+// Resume.js
+import React, { useContext } from 'react';
+import { UserContext } from './UserProvider';
+
+const Resume = () => {
+  const { usersDetails } = useContext(UserContext);
+
+  return (
+    <div>
+      <h1>User Details</h1>
+      {usersDetails.map((user, index) => (
+        <div key={index}>
+          <h2>Name: {user.name}</h2>
+          <h2>Age: {user.age}</h2>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default Resume;
+```
+
+With these updates, the submitted data from `EmployeeForm1` should be correctly displayed on the resume page.
+
+Here's the full modified code for `App.js`:
+
+```jsx
+import './App.css';
+import React from 'react';
+import UserProvider from './components/UserProvider';
+import Home from './components/Home';
+import Nav from './components/Nav';
+import Profile from './components/Profile';
+import Education from './components/Education';
+import Experience from './components/Experience';
+import Skills from './components/Skills';
+import StudentForm from './components/StudentForm';
+import Resume from './components/Resume';
+
+function App() {
+  const getPathname = () => {
+    const path = window.location.pathname;
+    return path.startsWith('/') ? path : `/${path}`;
+  };
+
+  const getPageComponent = () => {
+    const pathname = getPathname();
+
+    switch (pathname) {
+      case '/':
+        return <Home />;
+      case '/profile':
+        return <Profile />;
+      case '/education':
+        return <Education />;
+      case '/experience':
+        return <Experience />;
+      case '/skills':
+        return <Skills />;
+      case '/studentform':
+        return <StudentForm />;
+      case '/resume':
+        return <Resume />;
+      default:
+        return null;
+    }
+  };
+
+  const component = getPageComponent();
+
+  return (
+    <UserProvider>
+      <div className="App">
+        <Nav />
+        {component}
+      </div>
+    </UserProvider>
+  );
+}
+
+export default App;
+```
+
+Make sure to update the import statements accordingly in the `App.js` file based on the file structure of your components.
+
+Please let me know if you encounter any further issues.
