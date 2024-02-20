@@ -1,0 +1,35 @@
+import React, { useContext, useState } from 'react';
+import { UserContext } from './UserProvider';
+
+const EmployeeForm1 = () => {
+    const { handleUserSubmit } = useContext(UserContext);
+    const [name, setName] = useState('');
+    const [age, setAge] = useState('');
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const employeeData = { name, age };
+        handleUserSubmit(employeeData);
+    };
+    return (
+        <form onSubmit={handleSubmit}>
+            <label>
+                Name:
+                <input
+                    type="text"
+                    value={name}
+                    onChange={(event) => setName(event.target.value)}
+                />
+            </label>
+            <label>
+                Age:
+                <input
+                    type="text"
+                    value={age}
+                    onChange={(event) => setAge(event.target.value)}
+                />
+            </label>
+            <button type="submit">Submit</button>
+        </form>
+    );
+};
+export default EmployeeForm1;
