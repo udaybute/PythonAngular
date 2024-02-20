@@ -1,0 +1,103 @@
+Certainly! Here's the modified code with the necessary changes:
+
+```jsx
+// UserProvider.js
+import React, { createContext, useContext, useState } from 'react';
+
+export const UserContext = createContext();
+
+const UserProvider = ({ children }) => {
+  const [usersDetails, setUsersDetails] = useState([]);
+
+  const handleUserSubmit = (userData) => {
+    setUsersDetails([...usersDetails, userData]);
+  };
+
+  return (
+    <UserContext.Provider value={{ usersDetails, handleUserSubmit }}>
+      {children}
+    </UserContext.Provider>
+  );
+};
+
+export default UserProvider;
+```
+
+```jsx
+// Resume.js
+import React, { useContext } from 'react';
+import { UserContext } from './UserProvider';
+
+const Resume = () => {
+  const { usersDetails } = useContext(UserContext);
+
+  return (
+    <div>
+      <h1>User Details</h1>
+      {usersDetails.map((user, index) => (
+        <div key={index}>
+          <h2>Course Name: {user.courseName}</h2>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default Resume;
+```
+
+```jsx
+// App.js
+import React from 'react';
+import Education from './components/Education';
+import Experience from './components/Experience';
+import Home from './components/Home';
+import Nav from './components/Nav';
+import Profile from './components/Profile';
+import Resume from './components/Resume';
+import Skills from './components/Skills';
+import StudentForm from './components/StudentForm';
+import UserProvider from './components/UserProvider';
+
+function App() {
+  let component = null;
+  switch (window.location.pathname) {
+    case '/':
+      component = <Home />;
+      break;
+    case '/profile':
+      component = <Profile />;
+      break;
+    case '/education':
+      component = <Education />;
+      break;
+    case '/experience':
+      component = <Experience />;
+      break;
+    case '/skills':
+      component = <Skills />;
+      break;
+    case '/studentform':
+      component = <StudentForm />;
+      break;
+    case '/resume':
+      component = <Resume />;
+      break;
+    default:
+      component = <Home />;
+  }
+
+  return (
+    <UserProvider>
+      <div className="App">
+        <Nav />
+        {component}
+      </div>
+    </UserProvider>
+  );
+}
+
+export default App;
+```
+
+Make sure you have made these changes in your code and try again. The user details should now be displayed correctly on the resume page.
