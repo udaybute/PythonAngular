@@ -1,41 +1,47 @@
 
 import './App.css';
-import Education from './components/Education';
-import Experience from './components/Experience';
+import React from 'react';
+import UserProvider from './components/UserProvider';
 import Home from './components/Home';
 import Nav from './components/Nav';
 import Profile from './components/Profile';
-import Resume from './components/Resume';
+import Education from './components/Education';
+import Experience from './components/Experience';
 import Skills from './components/Skills';
 import StudentForm from './components/StudentForm';
-import UserProvider from './components/UserProvider';
+import Resume from './components/Resume';
 
 function App() {
-  let component = null;
-  switch (window.location.pathname) {
-    case "/":
-      component = <Home />
-      break
-    case "/profile":
-      component = <Profile />
-      break
-    case "/education":
-      component = <Education />
-      break
-    case "/experience":
-      component = <Experience />
-      break
-    case "/skills":
-      component = <Skills />
-      break
-    case "/studentform":
-      component = <StudentForm />
-      break
-      case "/resume":
-      component = <Resume />
-      break
+  const getPathname = () => {
+    const path = window.location.pathname;
+    return path.startsWith('/') ? path : `/${path}`;
+  };
 
-  }
+  const getPageComponent = () => {
+    const pathname = getPathname();
+
+    switch (pathname) {
+      case '/':
+        return <Home />;
+      case '/profile':
+        return <Profile />;
+      case '/education':
+        return <Education />;
+      case '/experience':
+        return <Experience />;
+      case '/skills':
+        return <Skills />;
+      case '/studentform':
+        return <StudentForm />;
+      case '/resume':
+        return <Resume />;
+      default:
+        return null;
+    }
+  };
+
+  const component = getPageComponent();
+
   return (
     <UserProvider>
       <div className="App">
@@ -47,3 +53,5 @@ function App() {
 }
 
 export default App;
+     
+
