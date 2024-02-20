@@ -1,0 +1,29 @@
+// App.js
+import React, { useState } from 'react';
+import UserProvider from './components/UserProvider';
+import EmployeeForm1 from './components/EmployeeForm1';
+import Resume from './components/Resume';
+
+function App() {
+  const [currentPage, setCurrentPage] = useState('form');
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  return (
+    <UserProvider>
+      <div className="App">
+        <h1>Employee Form</h1>
+        {currentPage === 'form' && <EmployeeForm1 />}
+        {currentPage === 'resume' && <Resume />}
+        <div>
+          <button onClick={() => handlePageChange('form')}>Form</button>
+          <button onClick={() => handlePageChange('resume')}>Resume</button>
+        </div>
+      </div>
+    </UserProvider>
+  );
+}
+
+export default App;
