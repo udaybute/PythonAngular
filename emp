@@ -1,35 +1,76 @@
+ 
+  To display the submitted data from `EmployeeForm1` on the resume page using `useContext`, you need to make a few modifications to your code. Here's an updated version:
+
+```jsx
+// EmployeeForm1.js
 import React, { useContext, useState } from 'react';
 import { UserContext } from './UserProvider';
 
 const EmployeeForm1 = () => {
-    const { handleUserSubmit } = useContext(UserContext);
-    const [name, setName] = useState('');
-    const [age, setAge] = useState('');
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const employeeData = { name, age };
-        handleUserSubmit(employeeData);
-    };
-    return (
-        <form onSubmit={handleSubmit}>
-            <label>
-                Name:
-                <input
-                    type="text"
-                    value={name}
-                    onChange={(event) => setName(event.target.value)}
-                />
-            </label>
-            <label>
-                Age:
-                <input
-                    type="text"
-                    value={age}
-                    onChange={(event) => setAge(event.target.value)}
-                />
-            </label>
-            <button type="submit">Submit</button>
-        </form>
-    );
+  const { handleUserSubmit } = useContext(UserContext);
+  const [name, setName] = useState('');
+  const [age, setAge] = useState('');
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const employeeData = { name, age };
+    handleUserSubmit(employeeData);
+    setName('');
+    setAge('');
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        Name:
+        <input
+          type="text"
+          value={name}
+          onChange={(event) => setName(event.target.value)}
+        />
+      </label>
+      <label>
+        Age:
+        <input
+          type="text"
+          value={age}
+          onChange={(event) => setAge(event.target.value)}
+        />
+      </label>
+      <button type="submit">Submit</button>
+    </form>
+  );
 };
+
 export default EmployeeForm1;
+```
+
+In this updated code, I added the lines `setName('');` and `setAge('');` after submitting the form to reset the input fields.
+
+Now, in your `Resume` component, you can access the `usersDetails` from the `UserContext` to display the submitted data. Here's the modified `Resume` component:
+
+```jsx
+// Resume.js
+import React, { useContext } from 'react';
+import { UserContext } from './UserProvider';
+
+const Resume = () => {
+  const { usersDetails } = useContext(UserContext);
+
+  return (
+    <div>
+      <h1>User Details</h1>
+      {usersDetails.map((user, index) => (
+        <div key={index}>
+          <h2>Name: {user.name}</h2>
+          <h2>Age: {user.age}</h2>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default Resume;
+```
+
+With these modifications, the submitted data from `EmployeeForm1` should be displayed on the resume page when you submit the form.          
